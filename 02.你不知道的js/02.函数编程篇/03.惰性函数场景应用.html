@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="dom" style="height:100px; width: 100px; background-color: red"></div>
+  <script>
+    
+    // 初版:实现功能 功能: 对dom元素绑定某个事件,执行哪种处理函数handler
+    function addEvent (dom, type, handler) {
+      // 如果支持新版本或现代浏览器
+      if (dom.addEventListener) {
+        console.log('first');       // 每次都进行判断
+        dom.addEventListener(type,handler, false)   // 冒泡事件处理模型
+      } else {
+        dom.attachEvent('on'+type, handler)
+      }
+    }
+    // 函数调用
+    addEvent(dom, 'click', function () {
+      alert(1)
+    })
+    addEvent(dom, 'click', function () {
+      alert(2)
+    })
+    addEvent(dom, 'click', function () {
+      alert(3)
+    })
+
+    // 惰性函数
+    // 具有函数记忆功能, 第一次判断浏览器支持的绑定事件的函数之后, 再次执行绑定不用多次判断
+    
+    function addEvent (dom, type, handler) {
+      if (dom.addEventListener) {
+        console.log('first')
+        dom.addEventListener(type, handler, false)    // 冒泡事件处理模型, true为事件捕获
+        addEvent = function (dom, type, handler) {
+          console.log('last')
+          dom.addEventListener(type, handler)
+        }
+      } else {
+        dom.attachEvent(type, handler)
+        addEvent = function (dom, type, hanlder) {
+          dom.attachEvent(type, handler)
+        }
+      }
+    }
+
+
+    
+  </script>
+</body>
+</html>
