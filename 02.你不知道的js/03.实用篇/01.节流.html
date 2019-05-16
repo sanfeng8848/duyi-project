@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="oDiv">0</div>
+    <button id="oBtn">click me</button>
+    <script>
+        let oDiv = document.getElementById('oDiv')
+        let oBtn = document.getElementById('oBtn')
+
+        
+        // 节流函数, 包裹事件处理函数, 约定在点击的时间范围内, 多次点击不会重复触发事件处理函数
+        // 返回值是 onclick的事件处理函数
+        function throttle () {
+            var lastTime = 0
+            return function (e) {
+                
+            }
+        }
+
+        function buy () {
+            oDiv.innerText = parseInt(oDiv.innerText) + 1;
+        }
+
+        // 节流buy函数, 1000ms间隔内只触发一次
+        oBtn.onclick = throttle(buy, 1000)  
+
+    </script>
+</body>
+</html>
