@@ -28,4 +28,34 @@ var testArr = [1,[2,[3,[4],5]]]
 var res = flatten(testArr)
 console.log(res)  // [ 1, 2, 3, 4, 5 ]
 
+
+
 // 优化 挂载到数组的原型上
+Array.prototype.flatten = function () {
+  var resArr = [];
+  this.forEach((item, index) => {
+    Object.prototype.toString.call(item) === '[object Array]' ? resArr = resArr.concat(item.flatten()) : resArr.push(item);
+  })
+  return resArr;
+}
+
+// 使用reduce
+function flattenReduce (arr) {
+  var arr = arr || []
+  return arr.reduce(function (prev, next, index, arr) {
+    return Object.prototype.toString.call(next) === '[object Array]' ? prev.concat(flattenReduce(next)) : prev.concat(next)
+  }, [])
+}
+
+// ES6 写法
+const flattenes6 = 
+  arr => arr.reduce((prev, next) => Object.prototype.toString.call(next) === '[object Array]' ? prev.concat(flattenes6(next)) : prev.concat(next), [])
+
+
+
+var arr = [1, 2, 3, [4, 5, 6, [[[[7, 8, 9]]]]], null, {}, ['hello', [3, 4, 5, [6]]]]
+// var res = [1, 2, 3, 4, 5, 6, 7, 8, 9, null, {}, 'hello', 3, 4, 5, 6]
+
+console.log(arr.flatten());
+console.log(flattenReduce(arr));
+console.log(flattenes6(arr));
