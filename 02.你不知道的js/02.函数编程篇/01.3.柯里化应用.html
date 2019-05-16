@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src='./01.2.柯里化应用.js'></script>
+</head>
+
+<body>
+  <div id="oDiv" style="height: 100px; width: 100px; border: 1px solid red;">hello</div>
+  <script>
+    var on = function (isSupport, element, event, handler) {
+      var isSupport = isSupport || document.addEventListener
+      if (isSupport) {
+        return element.addEventListener(event, handler, false)
+      } else {
+        return element.attachEvent('on' + event, handler)
+      }
+    }
+
+    // var on = (function () {
+    //   if (document.addEventListener) {
+    //     return function (ele, event, handler) {
+    //       ele.addEventListener(event, hanlder, false)
+    //     }
+    //   } else {
+    //     return function (ele, event, handler) {
+    //       ele.attachEvent('on' + event, hanlder)
+    //     }
+    //   }
+    // })();
+    on(null, oDiv, 'click', function () {
+      alert(1)
+    })
+    on(null, oDiv, 'mouseover', function () {
+      alert(3)
+    })
+  </script>
+</body>
+
+</html>
