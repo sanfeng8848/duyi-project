@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var obj = {
+      value: 'obj'
+    }
+    var value = 'window'
+    function show(name, age) {
+      console.log(this.value);
+      return {
+        name: name,
+        age: age
+      }
+    }
+
+    Function.prototype.newCall = function () {
+      var ctx = arguments[0] || window
+      ctx.fn = this
+      var args = []
+      for (var i = 1; i < arguments.length; i++) {
+        args.push('arguments[' + i + ']')
+      }
+      var res = eval('ctx.fn(' + args.join(',') + ')')
+      delete ctx.fn
+      return res
+    }
+
+    var res = show.newCall(obj, 'sanfeng', 19)
+    console.log(res)
+
+    // 实现apply
+    Function.prototype.newApply = function (ctx, arr) {
+      var ctx = Object(ctx) || window
+      ctx.fn = this
+      var res = null;
+      if (!arr) {
+        res = ctx.fn()
+        delete ctx.fn
+      } else {
+        var newArr = []
+        for (var i = 0; i < arr.length; i++) {
+          newArr.push('arr[' + i + ']')
+        }
+        console.log(newArr);
+        res = eval('ctx.fn('+ newArr.join(',') + ')')
+        delete ctx.fn
+      }
+      return res
+    }
+
+    // var result = show.newApply(obj, ['lisi', 30])
+    // console.log(result);
+
+    // Function.prototype.newApply = function (context, arr) {
+    //   var context = Object(context) || window;
+    //   context.fn = this;
+
+    //   var result;
+    //   if (!arr) {
+    //       result = context.fn();
+    //   }
+    //   else {
+    //       var args = [];
+    //       for (var i = 0, len = arr.length; i < len; i++) {
+    //           args.push('arr[' + i + ']');
+    //       }
+    //       result = eval('context.fn(' + args + ')')
+    //   }
+
+    //   delete context.fn
+    //   return result;
+    // }
+
+    var test = show.newApply(obj, ['sanfeng', 8848])
+    console.log("test ", test)
+  </script>
+</body>
+
+</html>

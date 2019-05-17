@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    
+    var obj = {
+      value: 'obj'
+    }
+    var value = 'window'
+    function show () {
+      console.log(this.value);
+    }
+    show()                // window
+    show.call(obj)        // obj
+    show.call(null)       // window
+    
+    obj.show = show;      // 给对象添加属性, 属性是个方法的定义
+    obj.show()            // obj 
+    delete obj.show
+
+    // 测试用例
+    var result = show.call(obj) // call的调用者是函数, 第一个参数是this指向的对象
+
+    // 模拟call函数 函数原型上添加方法
+    Function.prototype.newCall = function (ctx) {
+      // 此处的this就是函数本身newCall; ctx:调用函数,如:show函数, 在ctx函数增加属性fn 将函数赋值给fn
+      ctx.fn = this;    
+      ctx.fn()
+      delete ctx.fn
+    }
+
+    // 版本2: 解决call的参数问题 show.call(obj, 1,2,3)
+    
+  </script>
+</body>
+</html>

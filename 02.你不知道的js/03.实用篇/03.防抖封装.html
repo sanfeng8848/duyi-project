@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="input">
+  <script>
+    var input = document.getElementById('input')
+    // 处理函数
+    function ajax (e) {
+      console.log(e, this.value);
+    }
+    // 事件绑定 把处理函数经过防抖处理, 1000毫秒内防抖
+    input.oninput = debound(ajax, 2000);
+
+    function debound (handler, wait) {
+      var timer = null;
+      return function () {
+        var self = this, _args = arguments;
+        clearTimeout(timer)
+        timer = setTimeout(function () {
+          handler.apply(self, _args)
+        }, wait)
+      }
+    }
+
+  </script>
+</body>
+</html>

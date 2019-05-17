@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <div id="oDiv">0</div>
     <button id="oBtn">click me</button>
@@ -13,23 +15,33 @@
         let oDiv = document.getElementById('oDiv')
         let oBtn = document.getElementById('oBtn')
 
-        
+
         // 节流函数, 包裹事件处理函数, 约定在点击的时间范围内, 多次点击不会重复触发事件处理函数
         // 返回值是 onclick的事件处理函数
-        function throttle () {
+        function throttle(handler, wait) {
             var lastTime = 0
-            return function (e) {
-                
+            // 真正执行的事件处理函数,有事件对象e
+            return function () {        // 默认形参是事件对象 e, 不写的话,可以使用arguments[0]替代
+                var nowTime = new Date().getTime()
+                if (nowTime - lastTime > wait) {
+                    // handler()       // 直接调用
+                    handler.apply(this, arguments)      // this: 就是元素对象oBtn, arguments就是事件对象e
+                    lastTime = nowTime
+                }
             }
         }
 
-        function buy () {
+        function buy(e) {
+            // 如果封装函数直接调用buy, 调用者就是window, 此处的this就是window,
+            // 如果throttle中的handler直接调用不传递参数, e就是undefined
+            console.log(this, e)
             oDiv.innerText = parseInt(oDiv.innerText) + 1;
         }
 
         // 节流buy函数, 1000ms间隔内只触发一次
-        oBtn.onclick = throttle(buy, 1000)  
+        oBtn.onclick = throttle(buy, 1000)
 
     </script>
 </body>
+
 </html>

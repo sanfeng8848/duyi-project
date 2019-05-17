@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="inp">
+  <script>
+    var timer = null;
+    oInput = document.getElementById('inp')
+
+    // 真实的事件处理函数, 传递事件对象, 调用时传递
+    function ajax (e) {
+      console.log(e, this.value)
+    }
+    // 绑定了输入事件触发ajax函数, 每次输入都会触发事件处理函数
+    // oInput.oninput = ajax;  
+    
+    // 防抖操作: 使用定时器, 多长时间之后没有输入才触发事件处理函数
+    // 1秒之后执行ajax函数, 当1s内再次输入就会先清理定时器
+    oInput.oninput = function () {
+      clearTimeout(timer)
+      var that = this, _args = arguments
+      timer = setTimeout(function () {
+        ajax.apply(that, _args)   // _args: 就是oninput事件绑定的事件处理对象e
+      }, 1000)
+    }
+
+
+  </script>
+</body>
+</html>
